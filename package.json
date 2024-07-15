@@ -1,0 +1,12 @@
+{
+  "name": "smartincidentmanagementsystem",
+  "version": "1.0.0",
+  "description": "A comprehensive Smart Incident Management System with predictive analytics, resource optimization, and real-time features.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
