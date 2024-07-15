@@ -9,7 +9,8 @@ app.use(cors());
 
 mongoose.connect('mongodb://localhost:27017/sims');
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
+  console.log('Received request at /api');
   res.send('Smart Incident Management System API');
 });
 

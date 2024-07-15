@@ -8,6 +8,7 @@ const App = () => {
     const fetchData = async () => {
       try {
         const data = await getApiRoot();
+        console.log('API Response:', data); // Log response for debugging
         setApiResponse(data);
       } catch (error) {
         console.error('Error fetching data:', error);

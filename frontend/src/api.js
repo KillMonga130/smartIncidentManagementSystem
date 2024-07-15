@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = '/'; // Base URL is set to root, since proxy will handle it
+const API_URL = '/api'; // Ensure this matches the backend endpoint
 
 export const getApiRoot = async () => {
   try {
