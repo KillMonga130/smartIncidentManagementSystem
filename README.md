@@ -27,9 +27,14 @@ SmartIncidentManagementSystem/
 ├── frontend/
 │ ├── public/
 │ ├── src/
-│ └── package.json
+│ │ ├── App.js
+│ │ ├── App.css
+│ │ └── index.js
+│ ├── package.json
+│ └── node_modules/
 │
 └── README.md
+
 
 
 ## Features
@@ -46,6 +51,7 @@ SmartIncidentManagementSystem/
 ```bash
 git clone https://github.com/yourusername/SmartIncidentManagementSystem.git
 cd SmartIncidentManagementSystem
+
 
 2. Backend Setup (Node.js)
 Navigate to the backend directory and install the necessary dependencies:
