@@ -6,6 +6,7 @@ const socket = io('http://localhost:5000');
 
 function App() {
   const [incidents, setIncidents] = useState([]);
+  const [selectedIncident, setSelectedIncident] = useState(null);
   const [incidentType, setIncidentType] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
@@ -97,12 +98,25 @@ function App() {
         <h2>Active Incidents</h2>
         <ul>
           {incidents.map((incident, index) => (
-            <li key={index}>
+            <li key={index} onClick={() => setSelectedIncident(incident)}>
               {incident.incidentType} at ({incident.location.latitude},{' '}
               {incident.location.longitude}) - Severity: {incident.severity}
             </li>
           ))}
         </ul>
+
+        {selectedIncident && (
+          <div>
+            <h2>Incident Details</h2>
+            <p>Type: {selectedIncident.incidentType}</p>
+            <p>
+              Location: ({selectedIncident.location.latitude},{' '}
+              {selectedIncident.location.longitude})
+            </p>
+            <p>Severity: {selectedIncident.severity}</p>
+            <p>Status: {selectedIncident.status}</p>
+          </div>
+        )}
 
         {prediction && (
           <div>
