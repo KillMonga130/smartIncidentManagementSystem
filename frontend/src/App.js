@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 
-const socket = io('http://localhost:5000'); // Connect to the backend
+const socket = io('http://localhost:5000');
 
 function App() {
   const [incidents, setIncidents] = useState([]);
+  const [incidentType, setIncidentType] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [severity, setSeverity] = useState('');
   const [prediction, setPrediction] = useState(null);
 
   useEffect(() => {
-    // Fetch existing incidents when the component mounts
     fetchIncidents();
 
-    // Listen for real-time predictions
     socket.on('prediction', (data) => {
       setPrediction(data.prediction);
     });
@@ -31,20 +33,24 @@ function App() {
     }
   };
 
-  const handleReportIncident = async () => {
-    // Here you would gather data from a form or input fields
+  const handleReportIncident = async (e) => {
+    e.preventDefault();
     const newIncident = {
-      incidentType: 'Fire',
+      incidentType,
       location: {
-        latitude: 34.0522,
-        longitude: -118.2437,
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude),
       },
-      severity: 3,
+      severity: parseInt(severity, 10),
     };
 
     try {
       await axios.post('http://localhost:5000/api/incidents', newIncident);
       fetchIncidents(); // Refresh the incident list
+      setIncidentType('');
+      setLatitude('');
+      setLongitude('');
+      setSeverity('');
     } catch (error) {
       console.error('Error reporting incident:', error);
     }
@@ -54,7 +60,39 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Smart Incident Management System</h1>
-        <button onClick={handleReportIncident}>Report Incident</button>
+
+        <h2>Report a New Incident</h2>
+        <form onSubmit={handleReportIncident}>
+          <input
+            type="text"
+            placeholder="Incident Type"
+            value={incidentType}
+            onChange={(e) => setIncidentType(e.target.value)}
+            required
+          />
+          <input
+            type="number"
+            placeholder="Latitude"
+            value={latitude}
+            onChange={(e) => setLatitude(e.target.value)}
+            required
+          />
+          <input
+            type="number"
+            placeholder="Longitude"
+            value={longitude}
+            onChange={(e) => setLongitude(e.target.value)}
+            required
+          />
+          <input
+            type="number"
+            placeholder="Severity (1-5)"
+            value={severity}
+            onChange={(e) => setSeverity(e.target.value)}
+            required
+          />
+          <button type="submit">Submit Incident</button>
+        </form>
 
         <h2>Active Incidents</h2>
         <ul>
