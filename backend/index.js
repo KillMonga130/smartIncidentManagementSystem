@@ -3,11 +3,15 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const http = require('http');
+const { Server } = require('socket.io');
 
 const incidentRoutes = require('./routes/incident');
 const resourceRoutes = require('./routes/resource');
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -27,11 +31,23 @@ app.post('/api/predict', async (req, res) => {
     const response = await axios.post('http://127.0.0.1:5000/predict', req.body);
     const prediction = response.data.prediction;
 
-    // You can save the prediction in the database or use it as needed
+    // Broadcast prediction to all connected clients
+    io.emit('prediction', { prediction });
+
     res.json({ prediction });
   } catch (error) {
     res.status(500).json({ message: 'Error predicting incident', error: error.message });
   }
+});
+
+// Real-time connection setup
+io.on('connection', (socket) => {
+  console.log('New client connected');
+
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
 });
 
 app.get('/', (req, res) => {
@@ -39,6 +55,6 @@ app.get('/', (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
