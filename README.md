@@ -69,7 +69,7 @@ SmartIncidentManagementSystem/
 │
 └── README.md
 
-
+```
 2. Backend Setup (Node.js)
 Navigate to the backend directory and install the necessary dependencies:
 
